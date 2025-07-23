@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý người dùng - Admin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                  <i class="fas fa-home"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                  <i class="fas fa-box"></i> Sản phẩm
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="orders.html">
+                  <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="customers.html">
+                  <i class="fas fa-users"></i> Khách hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="users.html">
+                  <i class="fas fa-user-cog"></i> Người dùng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="roles.html">
+                  <i class="fas fa-users-cog"></i> Vai trò & Quyền
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reports.html">
+                  <i class="fas fa-chart-bar"></i> Báo cáo
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">Quản lý người dùng</h1>
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#addUserModal"
+            >
+              <i class="fas fa-plus"></i> Thêm người dùng mới
+            </button>
+          </div>
+
+          <!-- Search and Filter -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                id="searchInput"
+                placeholder="Tìm kiếm theo tên, email..."
+              />
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="roleFilter">
+                <option value="">Tất cả vai trò</option>
+                <option value="user">Người dùng</option>
+                <option value="admin">Quản trị viên</option>
+                <option value="super_admin">Quản trị viên cấp cao</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="statusFilter">
+                <option value="">Tất cả trạng thái</option>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary" onclick="resetFilters()">
+                <i class="fas fa-refresh"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Users table -->
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên đăng nhập</th>
+                  <th>Họ tên</th>
+                  <th>Email</th>
+                  <th>Số điện thoại</th>
+                  <th>Vai trò</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày tạo</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <!-- Users will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="User pagination">
+            <ul class="pagination justify-content-center" id="pagination">
+              <!-- Pagination will be generated here -->
+            </ul>
+          </nav>
+        </main>
+      </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm người dùng mới</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addUserForm">
+              <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="fullname" class="form-label">Họ tên</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fullname"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="role" class="form-label">Vai trò</label>
+                <select class="form-select" id="role" required>
+                  <option value="user">Người dùng</option>
+                  <option value="admin">Quản trị viên</option>
+                  <option value="super_admin">Quản trị viên cấp cao</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="saveUserBtn"
+            >
+              Lưu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Chỉnh sửa người dùng</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editUserForm">
+              <input type="hidden" id="editUserId" />
+              <div class="mb-3">
+                <label for="editUsername" class="form-label">Tên đăng nhập</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editUsername"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editEmail"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editFullname" class="form-label">Họ tên</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editFullname"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editPhone" class="form-label">Số điện thoại</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editPhone"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editAddress" class="form-label">Địa chỉ</label>
+                <textarea
+                  class="form-control"
+                  id="editAddress"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="editRole" class="form-label">Vai trò</label>
+                <select class="form-select" id="editRole" required>
+                  <option value="user">Người dùng</option>
+                  <option value="admin">Quản trị viên</option>
+                  <option value="super_admin">Quản trị viên cấp cao</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editStatus" class="form-label">Trạng thái</label>
+                <select class="form-select" id="editStatus" required>
+                  <option value="active">Hoạt động</option>
+                  <option value="inactive">Không hoạt động</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="updateUserBtn"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin/users.js"></script>
+  </body>
+</html>

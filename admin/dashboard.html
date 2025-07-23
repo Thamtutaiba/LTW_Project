@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Admin Panel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="../css/admin.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-overlay" style="display: none">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Đang tải...</span>
+      </div>
+    </div>
+    <!-- Error Message -->
+    <div
+      id="error-message"
+      class="alert alert-danger alert-dismissible fade show"
+      role="alert"
+      style="
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      "
+    >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+      <span id="error-text"></span>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="dashboard.html">
+                  <i class="fas fa-home"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                  <i class="fas fa-box"></i> Sản phẩm
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="orders.html">
+                  <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="customers.html">
+                  <i class="fas fa-users"></i> Khách hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="users.html">
+                  <i class="fas fa-user-cog"></i> Người dùng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="roles.html">
+                  <i class="fas fa-users-cog"></i> Vai trò & Quyền
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reports.html">
+                  <i class="fas fa-chart-bar"></i> Báo cáo
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  onclick="refreshData()"
+                >
+                  <i class="fas fa-sync-alt"></i> Làm mới
+                </button>
+              </div>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                data-bs-toggle="dropdown"
+              >
+                <i class="fas fa-calendar"></i> Hôm nay
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeTimeRange('today')"
+                    >Hôm nay</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeTimeRange('week')"
+                    >Tuần này</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeTimeRange('month')"
+                    >Tháng này</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Doanh thu hôm nay</h5>
+                  <h2 class="card-text" id="todayRevenue">0đ</h2>
+                  <p class="card-text">
+                    <small>
+                      <span id="revenueGrowth">0%</span> so với hôm qua
+                    </small>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Đơn hàng mới</h5>
+                  <h2 class="card-text" id="newOrders">0</h2>
+                  <p class="card-text">
+                    <small>
+                      <span id="ordersGrowth">0%</span> so với hôm qua
+                    </small>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Khách hàng mới</h5>
+                  <h2 class="card-text" id="newCustomers">0</h2>
+                  <p class="card-text">
+                    <small>
+                      <span id="customersGrowth">0%</span> so với hôm qua
+                    </small>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card bg-warning text-white">
+                <div class="card-body">
+                  <h5 class="card-title">Sản phẩm sắp hết</h5>
+                  <h2 class="card-text" id="lowStock">0</h2>
+                  <p class="card-text">
+                    <small>Cần bổ sung</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Doanh thu theo thời gian</h5>
+                  <canvas id="revenueChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Trạng thái đơn hàng</h5>
+                  <canvas id="orderStatusChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Orders and Low Stock Products -->
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Đơn hàng gần đây</h5>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Mã đơn</th>
+                          <th>Khách hàng</th>
+                          <th>Tổng tiền</th>
+                          <th>Trạng thái</th>
+                          <th>Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody id="recentOrdersBody">
+                        <!-- Will be loaded dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Sản phẩm sắp hết hàng</h5>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Sản phẩm</th>
+                          <th>Tồn kho</th>
+                          <th>Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody id="lowStockBody">
+                        <!-- Will be loaded dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin/dashboard.js"></script>
+    <script>
+      let currentTimeRange = "today";
+      let revenueChart = null;
+      let orderStatusChart = null;
+
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        // Kiểm tra quyền admin
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || user.role !== "admin") {
+          alert("Bạn không có quyền truy cập trang này!");
+          window.location.href = "../login.html";
+          return;
+        }
+
+        loadData();
+      });
+
+      // Làm mới dữ liệu
+      function refreshData() {
+        loadData();
+      }
+
+      // Thay đổi khoảng thời gian
+      function changeTimeRange(range) {
+        currentTimeRange = range;
+        loadData();
+      }
+
+      // Hàm tải dữ liệu
+      async function loadData() {
+        try {
+          showLoading();
+          const token = localStorage.getItem("token");
+          if (!token) {
+            window.location.href = "../login.html";
+            return;
+          }
+
+          const response = await fetch(
+            `http://localhost:3000/api/admin/dashboard/overview?timeRange=${currentTimeRange}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              window.location.href = "../login.html";
+              return;
+            }
+            throw new Error(`Lỗi tải dữ liệu: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Dữ liệu nhận được:", data); // Log để debug
+
+          // Kiểm tra cấu trúc dữ liệu và điều chỉnh
+          if (data.success) {
+            // Cấu trúc dữ liệu từ routes/admin.js
+            const stats = {
+              revenue: data.today_revenue || 0,
+              revenueGrowth: 0,
+              newOrders: data.new_orders || 0,
+              ordersGrowth: 0,
+              newCustomers: data.new_customers || 0,
+              customersGrowth: 0,
+              lowStock: data.total_products || 0,
+            };
+
+            updateQuickStats(stats);
+
+            // Khởi tạo biểu đồ nếu chưa có
+            if (!revenueChart || !orderStatusChart) {
+              initializeCharts();
+            }
+
+            // Các hàm cập nhật khác nếu có dữ liệu
+            if (data.recent_orders) updateRecentOrders(data.recent_orders);
+            if (data.low_stock_products)
+              updateLowStockProducts(data.low_stock_products);
+            if (data.chartData) updateCharts(data.chartData);
+          } else {
+            throw new Error("Cấu trúc dữ liệu không đúng định dạng");
+          }
+        } catch (error) {
+          console.error("Lỗi:", error);
+          showError(error.message);
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // Hàm hiển thị loading
+      function showLoading() {
+        const loading = document.getElementById("loadingIndicator");
+        if (loading) loading.style.display = "flex";
+      }
+
+      // Hàm ẩn loading
+      function hideLoading() {
+        const loading = document.getElementById("loadingIndicator");
+        if (loading) loading.style.display = "none";
+      }
+
+      // Hàm hiển thị lỗi
+      function showError(message) {
+        const errorDiv = document.getElementById("error-text");
+        errorDiv.textContent = message;
+        const errorAlert = document.getElementById("error-message");
+        errorAlert.classList.add("show");
+        setTimeout(() => {
+          errorAlert.classList.remove("show");
+        }, 5000);
+      }
+
+      // Cập nhật thống kê nhanh
+      function updateQuickStats(stats) {
+        document.getElementById("todayRevenue").textContent = formatCurrency(
+          stats.revenue
+        );
+        document.getElementById("revenueGrowth").textContent = formatGrowth(
+          stats.revenueGrowth
+        );
+        document.getElementById("newOrders").textContent = stats.newOrders;
+        document.getElementById("ordersGrowth").textContent = formatGrowth(
+          stats.ordersGrowth
+        );
+        document.getElementById("newCustomers").textContent =
+          stats.newCustomers;
+        document.getElementById("customersGrowth").textContent = formatGrowth(
+          stats.customersGrowth
+        );
+        document.getElementById("lowStock").textContent = stats.lowStock;
+      }
+
+      // Cập nhật đơn hàng gần đây
+      function updateRecentOrders(orders) {
+        const tbody = document.getElementById("recentOrdersBody");
+        tbody.innerHTML = "";
+
+        orders.forEach((order) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer_name || "N/A"}</td>
+                    <td>${formatCurrency(order.total_amount)}</td>
+                    <td><span class="badge bg-${getStatusColor(
+                      order.status
+                    )}">${order.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="viewOrder('${
+                          order.id
+                        }')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Cập nhật sản phẩm sắp hết hàng
+      function updateLowStockProducts(products) {
+        const tbody = document.getElementById("lowStockBody");
+        tbody.innerHTML = "";
+
+        products.forEach((product) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.inventory}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="restockProduct('${product.id}')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </td>
+                `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Khởi tạo biểu đồ
+      function initializeCharts() {
+        // Xóa biểu đồ cũ nếu tồn tại
+        if (revenueChart) {
+          revenueChart.destroy();
+        }
+        if (orderStatusChart) {
+          orderStatusChart.destroy();
+        }
+
+        // Biểu đồ doanh thu
+        const revenueCtx = document
+          .getElementById("revenueChart")
+          .getContext("2d");
+        revenueChart = new Chart(revenueCtx, {
+          type: "line",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Doanh thu",
+                data: [],
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        // Biểu đồ trạng thái đơn hàng
+        const orderStatusCtx = document
+          .getElementById("orderStatusChart")
+          .getContext("2d");
+        orderStatusChart = new Chart(orderStatusCtx, {
+          type: "doughnut",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                data: [],
+                backgroundColor: [
+                  "rgb(255, 99, 132)",
+                  "rgb(54, 162, 235)",
+                  "rgb(255, 205, 86)",
+                  "rgb(75, 192, 192)",
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+          },
+        });
+      }
+
+      // Cập nhật biểu đồ
+      function updateCharts(chartData) {
+        if (!revenueChart || !orderStatusChart) {
+          initializeCharts();
+        }
+
+        // Cập nhật biểu đồ doanh thu
+        revenueChart.data.labels = chartData.revenue.labels;
+        revenueChart.data.datasets[0].data = chartData.revenue.data;
+        revenueChart.update();
+
+        // Cập nhật biểu đồ trạng thái đơn hàng
+        orderStatusChart.data.labels = chartData.orderStatus.labels;
+        orderStatusChart.data.datasets[0].data = chartData.orderStatus.data;
+        orderStatusChart.update();
+      }
+
+      // Hàm tiện ích
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
+      }
+
+      function formatGrowth(growth) {
+        const sign = growth >= 0 ? "+" : "";
+        return `${sign}${growth}%`;
+      }
+
+      function getStatusColor(status) {
+        const colors = {
+          pending: "warning",
+          processing: "info",
+          shipping: "primary",
+          completed: "success",
+          cancelled: "danger",
+        };
+        return colors[status] || "secondary";
+      }
+
+      // Xử lý sự kiện
+      function viewOrder(orderId) {
+        window.location.href = `orders.html?id=${orderId}`;
+      }
+
+      function restockProduct(productId) {
+        window.location.href = `products.html?id=${productId}`;
+      }
+    </script>
+  </body>
+</html>

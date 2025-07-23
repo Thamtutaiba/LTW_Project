@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng Bài Viết</title>
+  <link rel="stylesheet" href="css/search.css" />
+  <link rel="stylesheet" href="css/all.min.css" />
+  <link rel="stylesheet" href="css/bootstrap.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/owl.carousel.css" />
+  <link rel="stylesheet" href="css/owl.theme.default.css" />
+  <link rel="icon" href="images/favicon.png" type="image/x-icon" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"></script>
+  <style>
+    .uploader-section { padding: 50px 0; margin-top: 80px; }
+    .form-container { background-color: #f8f9fa; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #333; }
+    .form-group input,
+    .form-group textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
+    .form-group input:focus,
+    .form-group textarea:focus { outline: none; border-color: #007bff; }
+    .form-group.invalid input,
+    .form-group.invalid textarea { border-color: #dc3545; }
+    .error-text { color: #dc3545; font-size: 14px; margin-top: 5px; display: none; }
+    .btn-submit, .btn-clear, .btn-delete { padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s; }
+    .btn-submit { background: linear-gradient(45deg, #007bff, #0056b3); color: #fff; }
+    .btn-clear { background: #6c757d; color: #fff; margin-left: 10px; }
+    .btn-delete { background: #dc3545; color: #fff; margin-left: 10px; }
+    .btn-submit:hover, .btn-clear:hover, .btn-delete:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+    .btn-submit:disabled, .btn-clear:disabled, .btn-delete:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+    .status-message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
+    .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 9999; }
+    .loading-spinner { background: white; padding: 30px; border-radius: 10px; text-align: center; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .file-info { font-size: 14px; color: #666; margin-top: 5px; }
+    .preview-section { margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+    .preview-section h3 { margin-bottom: 20px; }
+    .preview-image { max-width: 100%; height: auto; margin: 10px 0; }
+    .search-group { display: flex; align-items: center; margin-bottom: 20px; }
+    .search-group input { flex: 1; margin-right: 10px; }
+    .search-group button { padding: 12px 20px; background: #28a745; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+    .search-group button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-black border-bot fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/3K%20IMG/shop.png" alt="" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon bg-white"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="Product.html">SẢN PHẨM</a></li>
+          <li class="nav-item"><a class="nav-link active" href="news.html">TIN TỨC</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">KHUYẾN MÃI</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">LIÊN HỆ</a></li>
+        </ul>
+        <div class="d-flex">
+          <a href="#" class="nav-link text-white me-3"><i class="fas fa-search"></i></a>
+          <div class="dropdown me-3">
+            <a href="#" class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="fas fa-user"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="login.html" id="loginLink">Đăng nhập</a></li>
+              <li><a class="dropdown-item" href="signup.html" id="signupLink">Đăng ký</a></li>
+              <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Đăng xuất</a></li>
+            </ul>
+          </div>
+          <a href="#" class="nav-link text-white"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <div>Đang xử lý...</div>
+    </div>
+  </div>
+
+  <section class="uploader-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="form-container">
+            <h2 id="formTitle" style="text-align: center; margin-bottom: 30px; color: #333;">Đăng Bài Viết Mới</h2>
+            
+            <div class="status-message" id="statusMessage"></div>
+
+            <div class="search-group">
+              <input type="number" id="search-id" placeholder="Nhập ID bài viết để tìm" min="1" />
+              <button id="search-btn">Tìm bài viết</button>
+            </div>
+
+            <form id="newsForm" novalidate>
+              <div class="form-group">
+                <label for="news-id">ID bài viết</label>
+                <input type="text" id="news-id" readonly />
+              </div>
+              <div class="form-group">
+                <label for="news-title">Tiêu đề bài viết *</label>
+                <input type="text" id="news-title" name="title" placeholder="Nhập tiêu đề bài viết" required />
+                <div class="error-text" id="title-error">Vui lòng nhập tiêu đề bài viết</div>
+              </div>
+              <div class="form-group">
+                <label for="news-date">Ngày đăng *</label>
+                <input type="date" id="news-date" name="date_posted" required />
+                <div class="error-text" id="date-error">Vui lòng chọn ngày đăng</div>
+              </div>
+              <div class="form-group">
+                <label for="news-image">Ảnh banner chính</label>
+                <input type="file" id="news-image" name="image" accept="image/*" />
+                <button type="button" id="clear-image" style="margin-top: 5px; padding: 5px 10px; background: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer; display: none;">Xóa ảnh</button>
+                <div class="file-info">Chọn ảnh để làm banner chính cho bài viết (JPG, PNG, GIF)</div>
+                <img id="image-preview" class="preview-image" style="display: none;" alt="Ảnh banner chính" />
+              </div>
+              <div class="form-group">
+                <label for="banner-right">Ảnh banner phụ</label>
+                <input type="file" id="banner-right" name="banner_right" accept="image/*" />
+                <button type="button" id="clear-banner-right" style="margin-top: 5px; padding: 5px 10px; background: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer; display: none;">Xóa ảnh</button>
+                <div class="file-info">Chọn ảnh banner hiển thị bên phải trang tin tức</div>
+                <img id="banner-right-preview" class="preview-image" style="display: none;" alt="Ảnh banner phụ" />
+              </div>
+              <div class="form-group">
+                <label for="news-content">Nội dung bài viết *</label>
+                <textarea id="news-content" name="content" rows="15" placeholder="Nhập nội dung bài viết..." required></textarea>
+                <div class="error-text" id="content-error">Vui lòng nhập nội dung bài viết</div>
+              </div>
+              <div class="form-group text-center">
+                <button type="submit" class="btn-submit" id="submit-news">Đăng bài viết</button>
+                <button type="button" class="btn-clear" id="clear-form">Xóa form</button>
+                <button type="button" class="btn-delete" id="delete-news" style="display: none;">Xóa bài viết</button>
+              </div>
+            </form>
+
+            <div class="preview-section" id="preview-section">
+              <h3>Xem trước bài viết</h3>
+              <h4 id="preview-title"></h4>
+              <div id="preview-content"></div>
+              <img id="preview-image" class="preview-image" style="display: none;" alt="Ảnh banner chính" />
+              <img id="preview-banner-right" class="preview-image" style="display: none;" alt="Ảnh banner phụ" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 p-3">
+          <a href="#"><img src="images/3K_IMG/3kshop.png" alt="3K Shop" /></a>
+          <p class="pt-3">
+            West City, 28/43 Siêu đô thị, Trái Đất <br />Khu phố Suginami, Tokyo, Thế kỷ 22 <br />Đảo Cacao, Biển Tân Thế Giới
+          </p>
+          <p class="pt-3">
+            <i class="fas fa-phone"></i> 0123456789
+          </p>
+        </div>
+        <div class="col-lg-3 p-3">
+          <p>Về chúng tôi</p>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a href="Contact.html" class="nav-link">Giới Thiệu Về MUSIC LOVER</a></li>
+            <li class="nav-item"><a href="index.html" class="nav-link">Trang Chủ</a></li>
+            <li class="nav-item"><a href="Product.html" class="nav-link">Sản Phẩm</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 p-3">
+          <p>Địa chỉ chi tiết</p>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link">Tầng cao nhất, Tháp Korin, Cõi Trời</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Động Going Merry, Cảng Biển Foosha</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let isSubmitting = false;
+    let isEditMode = false;
+    let currentNewsId = null;
+    const API_BASE_URL = 'http://localhost:3000';
+
+    async function checkTokenValidity() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/news/latest`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        if (!response.ok) {
+            console.error('[CLIENT] Token check failed:', response.status);
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.error('[CLIENT] Token check error:', error.message);
+        return false;
+    }
+}
+    function init() {
+        console.log('Initializing page...');
+        checkAuthentication();
+        initializeTinyMCE();
+        setupFormHandler();
+        setupSearchHandler();
+        setupClearHandler();
+        setupDeleteHandler();
+        setupClearImageHandlers();
+        setDefaultDate();
+        updateAuthUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    function checkAuthentication() {
+        const token = localStorage.getItem('token');
+        console.log('Checking token:', token ? 'Token found' : 'No token');
+        if (!token) {
+            showError('Vui lòng đăng nhập để sử dụng tính năng này');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+            return false;
+        }
+        return true;
+    }
+
+    function setDefaultDate() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('news-date').value = today;
+    }
+
+    function initializeTinyMCE() {
+        console.log('Initializing TinyMCE...');
+        tinymce.init({
+            selector: '#news-content',
+            height: 400,
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+            toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            images_upload_handler: uploadImageToTinyMCE,
+            automatic_uploads: true,
+            paste_data_images: true,
+            file_picker_types: 'image',
+            file_picker_callback: function(cb, value, meta) {
+                if (meta.filetype === 'image') {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.onchange = function() {
+                        const file = this.files[0];
+                        if (file) {
+                            uploadImageFile(file).then(url => {
+                                cb(url, { title: file.name });
+                            }).catch(error => {
+                                console.error('Error uploading image:', error);
+                                alert('Lỗi tải ảnh: ' + error.message);
+                            });
+                        }
+                    };
+                    input.click();
+                }
+            },
+            setup: function(editor) {
+                editor.on('init', function() {
+                    console.log('TinyMCE initialized successfully');
+                });
+                editor.on('error', function(e) {
+                    console.error('TinyMCE error:', e);
+                });
+                editor.on('Change', updatePreview);
+            }
+        }).catch(error => {
+            console.error('TinyMCE initialization failed:', error);
+            showError('Lỗi khởi tạo trình soạn thảo');
+        });
+    }
+
+    async function uploadImageToTinyMCE(blobInfo, success, failure) {
+        try {
+            console.log('Uploading image to TinyMCE:', blobInfo.filename());
+            const formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+            
+            const response = await fetch(`${API_BASE_URL}/api/upload-image`, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Upload image failed:', errorData);
+                throw new Error(errorData.message || 'Lỗi tải ảnh lên');
+            }
+
+            const result = await response.json();
+            if (result.location) {
+                console.log('Image uploaded successfully:', result.location);
+                success(result.location);
+            } else {
+                throw new Error('Không có URL ảnh trả về');
+            }
+        } catch (error) {
+            console.error('TinyMCE image upload error:', error.message);
+            failure('Lỗi tải ảnh: ' + error.message);
+        }
+    }
+
+async function uploadImageFile(file) {
+    console.log('[CLIENT] Uploading file:', file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/upload-image`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('[CLIENT] Upload failed:', errorData);
+            throw new Error(errorData.message || 'Lỗi tải ảnh lên');
+        }
+
+        const result = await response.json();
+        if (!result.location) {
+            throw new Error('Không có URL ảnh trả về');
+        }
+
+        console.log('[CLIENT] File uploaded:', result.location);
+        return result.location;
+    } catch (error) {
+        console.error('[CLIENT] Upload image error:', error.message);
+        if (error.message.includes('Token không hợp lệ') || error.message.includes('Chưa đăng nhập')) {
+            showError('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+            setTimeout(() => window.location.href = 'login.html', 2000);
+        }
+        throw error;
+    }
+}
+    function setupFormHandler() {
+        const form = document.getElementById('newsForm');
+        if (!form) {
+            console.error('Form with ID "newsForm" not found');
+            return;
+        }
+        console.log('Setting up form handler');
+        form.addEventListener('submit', (e) => {
+            console.log('Submit event triggered');
+            handleFormSubmit(e);
+        });
+        const titleInput = document.getElementById('news-title');
+        const dateInput = document.getElementById('news-date');
+        const imageInput = document.getElementById('news-image');
+        const bannerRightInput = document.getElementById('banner-right');
+        
+        if (titleInput) titleInput.addEventListener('input', updatePreview);
+        if (dateInput) dateInput.addEventListener('input', validateField);
+        if (imageInput) imageInput.addEventListener('change', handleImagePreview);
+        if (bannerRightInput) bannerRightInput.addEventListener('change', handleImagePreview);
+    }
+
+function setupSearchHandler() {
+    const searchBtn = document.getElementById('search-btn');
+    if (!searchBtn) {
+        console.error('[CLIENT] Search button with ID "search-btn" not found');
+        showError('Không tìm thấy nút tìm bài viết');
+        return;
+    }
+    searchBtn.addEventListener('click', async () => {
+        const searchIdInput = document.getElementById('search-id');
+        if (!searchIdInput) {
+            console.error('[CLIENT] Search ID input with ID "search-id" not found');
+            showError('Không tìm thấy ô nhập ID bài viết');
+            return;
+        }
+        const newsId = searchIdInput.value.trim();
+        console.log('[CLIENT] Searching news with ID:', newsId);
+        if (!newsId || isNaN(newsId) || newsId <= 0) {
+            console.error('[CLIENT] Invalid or empty news ID:', newsId);
+            showError('Vui lòng nhập ID bài viết hợp lệ (số dương)');
+            return;
+        }
+
+        try {
+            showLoading(true);
+            if (!await checkTokenValidity()) {
+                showError('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                return;
+            }
+            console.log('[CLIENT] Sending GET request to:', `${API_BASE_URL}/api/news/${newsId}`);
+            const response = await fetch(`${API_BASE_URL}/api/news/${newsId}`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('[CLIENT] Search failed:', errorData);
+                throw new Error(errorData.message || 'Bài viết không tồn tại');
+            }
+
+            const news = await response.json();
+            console.log('[CLIENT] Found news:', news);
+            loadNewsForEdit(news);
+        } catch (error) {
+            console.error('[CLIENT] Error searching news:', error.message);
+            showError('Lỗi tìm bài viết: ' + error.message);
+        } finally {
+            showLoading(false);
+        }
+    });
+}
+
+    function setupClearHandler() {
+        const clearBtn = document.getElementById('clear-form');
+        if (!clearBtn) {
+            console.error('Clear button with ID "clear-form" not found');
+            return;
+        }
+        console.log('Setting up clear handler');
+        clearBtn.addEventListener('click', () => {
+            console.log('Clear button clicked');
+            resetForm();
+            switchToAddMode();
+        });
+    }
+
+function setupDeleteHandler() {
+    const deleteBtn = document.getElementById('delete-news');
+    if (!deleteBtn) {
+        console.error('[CLIENT] Delete button with ID "delete-news" not found');
+        showError('Không tìm thấy nút xóa bài viết');
+        return;
+    }
+    console.log('[CLIENT] Setting up delete handler');
+    deleteBtn.addEventListener('click', async () => {
+        console.log('[CLIENT] Delete button clicked, currentNewsId:', currentNewsId);
+        if (!currentNewsId) {
+            showError('Không có bài viết nào được chọn để xóa');
+            return;
+        }
+
+        if (!confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+            return;
+        }
+
+        try {
+            showLoading(true);
+            if (!await checkTokenValidity()) {
+                showError('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                return;
+            }
+            console.log('[CLIENT] Sending DELETE request to:', `${API_BASE_URL}/api/news/${currentNewsId}`);
+            const response = await fetch(`${API_BASE_URL}/api/news/${currentNewsId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('[CLIENT] Delete failed:', errorData);
+                throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log('[CLIENT] News deleted:', result);
+            showSuccess('Xóa bài viết thành công!');
+            resetForm();
+            switchToAddMode();
+            setTimeout(() => window.location.href = 'news.html', 2000);
+        } catch (error) {
+            console.error('[CLIENT] Error deleting news:', error.message);
+            if (handleTokenError(error)) return;
+            showError('Lỗi xóa bài viết: ' + error.message);
+        } finally {
+            showLoading(false);
+        }
+    });
+}
+
+    function setupClearImageHandlers() {
+        const clearImageBtn = document.getElementById('clear-image');
+        const clearBannerRightBtn = document.getElementById('clear-banner-right');
+
+        if (clearImageBtn) {
+            clearImageBtn.addEventListener('click', () => {
+                console.log('Clearing main banner image');
+                const imageInput = document.getElementById('news-image');
+                const imagePreview = document.getElementById('image-preview');
+                imageInput.value = '';
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                clearImageBtn.style.display = 'none';
+                updatePreview();
+            });
+        }
+
+        if (clearBannerRightBtn) {
+            clearBannerRightBtn.addEventListener('click', () => {
+                console.log('Clearing right banner image');
+                const bannerRightInput = document.getElementById('banner-right');
+                const bannerRightPreview = document.getElementById('banner-right-preview');
+                bannerRightInput.value = '';
+                bannerRightPreview.src = '';
+                bannerRightPreview.style.display = 'none';
+                clearBannerRightBtn.style.display = 'none';
+                updatePreview();
+            });
+        }
+    }
+
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    console.log('[CLIENT] Form submitted, isEditMode:', isEditMode, 'currentNewsId:', currentNewsId);
+
+    if (isSubmitting) {
+        console.log('[CLIENT] Submission in progress, ignoring');
+        return;
+    }
+
+    if (!await checkTokenValidity()) {
+        showError('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+        setTimeout(() => window.location.href = 'login.html', 2000);
+        return;
+    }
+
+    const titleInput = document.getElementById('news-title');
+    const dateInput = document.getElementById('news-date');
+    const contentEditor = tinymce.get('news-content');
+    const imageInput = document.getElementById('news-image');
+    const bannerRightInput = document.getElementById('banner-right');
+
+    if (!titleInput || !dateInput || !contentEditor || !imageInput || !bannerRightInput) {
+        console.error('[CLIENT] Form inputs not found');
+        showError('Lỗi cấu trúc form, vui lòng kiểm tra lại');
+        return;
+    }
+
+    const title = titleInput.value.trim();
+    const datePosted = dateInput.value;
+    const content = contentEditor.getContent();
+    const imageFile = imageInput.files[0];
+    const bannerRightFile = bannerRightInput.files[0];
+
+    console.log('[CLIENT] Form data:', { title, datePosted, content, imageFile: !!imageFile, bannerRightFile: !!bannerRightFile });
+
+    if (!validateForm(title, datePosted, content)) {
+        console.log('[CLIENT] Validation failed');
+        return;
+    }
+
+    try {
+        isSubmitting = true;
+        showLoading(true);
+        updateSubmitButton(true);
+
+        let imageUrl = null;
+        const imagePreview = document.getElementById('image-preview');
+        if (imageFile) {
+            imageUrl = await uploadImageFile(imageFile);
+            console.log('[CLIENT] Main banner image uploaded:', imageUrl);
+        } else if (isEditMode && imagePreview.src && imagePreview.src !== window.location.href && imagePreview.src !== 'about:blank') {
+            imageUrl = imagePreview.src;
+            console.log('[CLIENT] Keeping existing main banner:', imageUrl);
+        }
+
+        let bannerRightUrl = null;
+        const bannerRightPreview = document.getElementById('banner-right-preview');
+        if (bannerRightFile) {
+            bannerRightUrl = await uploadImageFile(bannerRightFile);
+            console.log('[CLIENT] Right banner image uploaded:', bannerRightUrl);
+        } else if (isEditMode && bannerRightPreview.src && bannerRightPreview.src !== window.location.href && bannerRightPreview.src !== 'about:blank') {
+            bannerRightUrl = bannerRightPreview.src;
+            console.log('[CLIENT] Keeping existing right banner:', bannerRightUrl);
+        }
+
+        const newsData = {
+            title,
+            content,
+            date_posted: datePosted,
+            image: imageUrl || null,
+            banner_right: bannerRightUrl || null
+        };
+
+        console.log('[CLIENT] Submitting news data:', newsData);
+
+        const url = isEditMode ? `${API_BASE_URL}/api/news/${currentNewsId}` : `${API_BASE_URL}/api/news`;
+        const method = isEditMode ? 'PUT' : 'POST';
+        console.log('[CLIENT] Sending request to:', url, 'Method:', method);
+
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(newsData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('[CLIENT] Submission failed:', errorData);
+            throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log('[CLIENT] News submission successful:', result);
+
+        showSuccess(isEditMode ? 'Cập nhật bài viết thành công!' : 'Đăng bài viết thành công!');
+        resetForm();
+        switchToAddMode();
+
+        setTimeout(() => window.location.href = 'news.html', 2000);
+    } catch (error) {
+        console.error('[CLIENT] Error submitting news:', error.message);
+        if (handleTokenError(error)) return;
+        showError('Lỗi ' + (isEditMode ? 'cập nhật' : 'đăng') + ' bài viết: ' + error.message);
+    } finally {
+        isSubmitting = false;
+        showLoading(false);
+        updateSubmitButton(false);
+    }
+}
+    function validateForm(title, datePosted, content) {
+        console.log('Validating form:', { title, datePosted, content });
+        let isValid = true;
+        const titleGroup = document.getElementById('news-title')?.parentElement;
+        const dateGroup = document.getElementById('news-date')?.parentElement;
+        const contentGroup = document.getElementById('news-content')?.parentElement;
+
+        if (!titleGroup || !dateGroup || !contentGroup) {
+            console.error('Form groups not found');
+            showError('Lỗi cấu trúc form, vui lòng kiểm tra lại');
+            return false;
+        }
+
+        titleGroup.classList.remove('invalid');
+        dateGroup.classList.remove('invalid');
+        contentGroup.classList.remove('invalid');
+        const titleError = document.getElementById('title-error');
+        const dateError = document.getElementById('date-error');
+        const contentError = document.getElementById('content-error');
+
+        if (titleError) titleError.style.display = 'none';
+        if (dateError) dateError.style.display = 'none';
+        if (contentError) contentError.style.display = 'none';
+
+        if (!title) {
+            titleGroup.classList.add('invalid');
+            if (titleError) titleError.style.display = 'block';
+            isValid = false;
+        }
+
+        if (!datePosted) {
+            dateGroup.classList.add('invalid');
+            if (dateError) dateError.style.display = 'block';
+            isValid = false;
+        }
+
+        if (!content || content.trim() === '') {
+            contentGroup.classList.add('invalid');
+            if (contentError) contentError.style.display = 'block';
+            isValid = false;
+        }
+
+        console.log('Validation result:', isValid);
+        return isValid;
+    }
+
+    function validateField(e) {
+        const field = e.target;
+        const errorId = `${field.id}-error`;
+        const errorElement = document.getElementById(errorId);
+        const group = field.parentElement;
+
+        if (!errorElement) {
+            console.warn(`Error element with ID "${errorId}" not found`);
+            return;
+        }
+
+        if (field.value.trim()) {
+            group.classList.remove('invalid');
+            errorElement.style.display = 'none';
+        } else {
+            group.classList.add('invalid');
+            errorElement.style.display = 'block';
+        }
+    }
+
+    function handleImagePreview(e) {
+        const input = e.target;
+        const preview = document.getElementById(`${input.id}-preview`);
+        const clearBtn = document.getElementById(`clear-${input.id}`);
+        preview.src = '';
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                if (clearBtn) clearBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+            if (clearBtn) clearBtn.style.display = 'none';
+        }
+        updatePreview();
+    }
+
+    function updatePreview() {
+        const title = document.getElementById('news-title').value;
+        const content = tinymce.get('news-content').getContent();
+        const image = document.getElementById('image-preview').src;
+        const bannerRight = document.getElementById('banner-right-preview').src;
+
+        document.getElementById('preview-title').textContent = title || 'Tiêu đề bài viết';
+        document.getElementById('preview-content').innerHTML = content || 'Nội dung bài viết';
+        const previewImage = document.getElementById('preview-image');
+        const previewBannerRight = document.getElementById('preview-banner-right');
+
+        if (image && image !== 'about:blank') {
+            previewImage.src = image;
+            previewImage.style.display = 'block';
+        } else {
+            previewImage.style.display = 'none';
+        }
+
+        if (bannerRight && bannerRight !== 'about:blank') {
+            previewBannerRight.src = bannerRight;
+            previewBannerRight.style.display = 'block';
+        } else {
+            previewBannerRight.style.display = 'none';
+        }
+    }
+
+    function loadNewsForEdit(news) {
+        console.log('Loading news for edit:', news);
+        isEditMode = true;
+        currentNewsId = news.id;
+        document.getElementById('formTitle').textContent = 'Sửa Bài Viết';
+        document.getElementById('submit-news').textContent = 'Cập nhật bài viết';
+        document.getElementById('delete-news').style.display = 'inline-block';
+        document.getElementById('news-id').value = news.id;
+        document.getElementById('news-title').value = news.title || '';
+        
+        const datePosted = news.date_posted ? new Date(news.date_posted).toISOString().split('T')[0] : '';
+        document.getElementById('news-date').value = datePosted;
+        
+        tinymce.get('news-content').setContent(news.content || '');
+
+        const imagePreview = document.getElementById('image-preview');
+        const clearImageBtn = document.getElementById('clear-image');
+        if (news.image) {
+            imagePreview.src = news.image;
+            imagePreview.style.display = 'block';
+            if (clearImageBtn) clearImageBtn.style.display = 'inline-block';
+        } else {
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            if (clearImageBtn) clearImageBtn.style.display = 'none';
+        }
+
+        const bannerRightPreview = document.getElementById('banner-right-preview');
+        const clearBannerRightBtn = document.getElementById('clear-banner-right');
+        if (news.banner_right) {
+            bannerRightPreview.src = news.banner_right;
+            bannerRightPreview.style.display = 'block';
+            if (clearBannerRightBtn) clearBannerRightBtn.style.display = 'inline-block';
+        } else {
+            bannerRightPreview.src = '';
+            bannerRightPreview.style.display = 'none';
+            if (clearBannerRightBtn) clearBannerRightBtn.style.display = 'none';
+        }
+
+        updatePreview();
+    }
+
+    function switchToAddMode() {
+        isEditMode = false;
+        currentNewsId = null;
+        document.getElementById('formTitle').textContent = 'Đăng Bài Viết Mới';
+        document.getElementById('submit-news').textContent = 'Đăng bài viết';
+        document.getElementById('delete-news').style.display = 'none';
+        document.getElementById('news-id').value = '';
+        resetForm();
+    }
+
+    function resetForm() {
+        console.log('Resetting form');
+        document.getElementById('newsForm').reset();
+        document.getElementById('news-id').value = '';
+        const imagePreview = document.getElementById('image-preview');
+        const bannerRightPreview = document.getElementById('banner-right-preview');
+        const clearImageBtn = document.getElementById('clear-image');
+        const clearBannerRightBtn = document.getElementById('clear-banner-right');
+        
+        imagePreview.src = '';
+        imagePreview.style.display = 'none';
+        bannerRightPreview.src = '';
+        bannerRightPreview.style.display = 'none';
+        
+        if (clearImageBtn) clearImageBtn.style.display = 'none';
+        if (clearBannerRightBtn) clearBannerRightBtn.style.display = 'none';
+        
+        tinymce.get('news-content').setContent('');
+        setDefaultDate();
+        document.querySelectorAll('.form-group').forEach(group => group.classList.remove('invalid'));
+        document.querySelectorAll('.error-text').forEach(error => error.style.display = 'none');
+        updatePreview();
+    }
+
+    function showLoading(show) {
+        console.log('Toggling loading:', show);
+        document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+    }
+
+    function updateSubmitButton(disabled) {
+        console.log('Updating submit button:', disabled);
+        const btn = document.getElementById('submit-news');
+        btn.disabled = disabled;
+        btn.textContent = disabled ? 'Đang xử lý...' : (isEditMode ? 'Cập nhật bài viết' : 'Đăng bài viết');
+    }
+
+    function showError(message) {
+        console.log('Showing error:', message);
+        const statusEl = document.getElementById('statusMessage');
+        statusEl.className = 'status-message status-error';
+        statusEl.textContent = message;
+        statusEl.style.display = 'block';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 5000);
+    }
+
+    function showSuccess(message) {
+        console.log('Showing success:', message);
+        const statusEl = document.getElementById('statusMessage');
+        statusEl.className = 'status-message status-success';
+        statusEl.textContent = message;
+        statusEl.style.display = 'block';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 5000);
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.id === 'logoutBtn') {
+            e.preventDefault();
+            console.log('Logging out');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    });
+
+    function updateAuthUI() {
+        console.log('Updating auth UI');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const loginLink = document.getElementById('loginLink');
+        const signupLink = document.getElementById('signupLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (user.username) {
+            console.log('User logged in:', user.username);
+            loginLink.style.display = 'none';
+            signupLink.style.display = 'none';
+            logoutBtn.style.display = 'block';
+            logoutBtn.textContent = `Đăng xuất (${user.username})`;
+        } else {
+            console.log('No user logged in');
+        }
+    }
+    function handleTokenError(error) {
+    if (error.message.includes('Token không hợp lệ') || error.message.includes('Chưa đăng nhập')) {
+        console.error('Token invalid or expired:', error);
+        showError('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 2000);
+        return true;
+    }
+    return false;
+}
+  </script>
+</body>
+</html>

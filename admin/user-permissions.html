@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phân quyền người dùng - Admin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                  <i class="fas fa-home"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                  <i class="fas fa-box"></i> Sản phẩm
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="orders.html">
+                  <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="customers.html">
+                  <i class="fas fa-users"></i> Khách hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="users.html">
+                  <i class="fas fa-user-cog"></i> Người dùng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="roles.html">
+                  <i class="fas fa-users-cog"></i> Vai trò & Quyền
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reports.html">
+                  <i class="fas fa-chart-bar"></i> Báo cáo
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">Phân quyền người dùng</h1>
+            <a href="users.html" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+          </div>
+
+          <!-- User Info Card -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Thông tin người dùng</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><strong>Tên đăng nhập:</strong> <span id="userUsername">-</span></p>
+                  <p><strong>Họ tên:</strong> <span id="userFullname">-</span></p>
+                  <p><strong>Email:</strong> <span id="userEmail">-</span></p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Vai trò hiện tại:</strong> <span id="userCurrentRole" class="badge">-</span></p>
+                  <p><strong>Trạng thái:</strong> <span id="userStatus" class="badge">-</span></p>
+                  <p><strong>Ngày tạo:</strong> <span id="userCreatedAt">-</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Role Assignment -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Gán vai trò</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="userRole" class="form-label">Chọn vai trò:</label>
+                  <select class="form-select" id="userRole">
+                    <option value="">Chọn vai trò...</option>
+                  </select>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                  <button class="btn btn-primary" onclick="updateUserRole()">
+                    <i class="fas fa-save"></i> Cập nhật vai trò
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Permissions -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Quyền tùy chỉnh</h5>
+              <small class="text-muted">Các quyền này sẽ được thêm vào ngoài quyền của vai trò</small>
+            </div>
+            <div class="card-body">
+              <div class="row" id="permissionsContainer">
+                <!-- Permissions will be loaded here -->
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-success" onclick="saveCustomPermissions()">
+                  <i class="fas fa-save"></i> Lưu quyền tùy chỉnh
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Permissions Summary -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Tổng hợp quyền hiện tại</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>Quyền từ vai trò:</h6>
+                  <div id="rolePermissions" class="mb-3">
+                    <!-- Role permissions will be displayed here -->
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h6>Quyền tùy chỉnh:</h6>
+                  <div id="customPermissions">
+                    <!-- Custom permissions will be displayed here -->
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-info" onclick="refreshPermissionsSummary()">
+                  <i class="fas fa-refresh"></i> Làm mới
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Permission Details Modal -->
+    <div class="modal fade" id="permissionDetailsModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Chi tiết quyền</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="permissionDetailsContent">
+              <!-- Permission details will be loaded here -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin/user-permissions.js"></script>
+  </body>
+</html>

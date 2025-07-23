@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+  <!-- InstanceBegin template="/Templates/tam.dwt" codeOutsideHTMLIsLocked="false" -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- InstanceBeginEditable name="doctitle" -->
+    <title>Music Lover - Profile</title>
+    <!-- InstanceEndEditable -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/search.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/owl.carousel.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.css" />
+    <link rel="icon" href="images/favicon.png" type="image/x-icon" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .order-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .order-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 8px 8px 0 0;
+        }
+        .order-body {
+            padding: 15px;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .status-pending { background-color: #ffd700; }
+        .status-processing { background-color: #87ceeb; }
+        .status-shipping { background-color: #98fb98; }
+        .status-completed { background-color: #90ee90; }
+        .status-cancelled { background-color: #ff6b6b; }
+        .order-details-modal .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .order-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+    <!-- InstanceBeginEditable name="head" -->
+    <!-- InstanceEndEditable -->
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-black border-bot fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/3K%20IMG/shop.png" alt="" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon bg-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Product.html">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">TIN TỨC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">KHUYẾN MÃI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Contact.html">LIÊN HỆ</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="nav-link text-white me-3" id="searchIcon"><i class="fas fa-search"></i></a>
+                    <div class="dropdown me-3">
+                        <a href="#" class="nav-link text-white dropdown-toggle" id="userIcon" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userIcon">
+                            <li><a class="dropdown-item" href="login.html" id="loginLink">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="signup.html" id="signupLink">Đăng ký</a></li>
+                            <li><a class="dropdown-item" href="profile.html" id="ProfileLink">Trang cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn" style="display: none;">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                    <a href="#" class="nav-link text-white" id="cartIcon"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+           <section id="product-banner">
+        <img src="images/3K IMG/Banner pic3.jpg" alt="Product Banner" class="non-moving-img" />
+      </section>
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <!-- User Information Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0">Thông tin cá nhân</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="profileForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Tên đăng nhập</label>
+                                <input type="text" class="form-control" id="username" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fullname" class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" id="fullname" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="phone" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <textarea class="form-control" id="address" rows="3" readonly></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Vai trò</label>
+                                <input type="text" class="form-control" id="role" readonly>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" id="updateBtn">Cập nhật thông tin</button>
+                            </div>
+                        </form>
+                        <!-- Địa chỉ nâng cao -->
+                        <hr>
+                        <div id="addressManager">
+                          <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">Địa chỉ giao hàng</h5>
+                            <button class="btn btn-success btn-sm" id="addAddressBtn"><i class="fa fa-plus"></i> Thêm địa chỉ</button>
+                          </div>
+                          <div id="addressList">
+                            <!-- Danh sách địa chỉ sẽ được load ở đây -->
+                          </div>
+                        </div>
+                        <!-- Modal Thêm/Sửa địa chỉ -->
+                        <div class="modal fade" id="addressModal" tabindex="-1">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="addressModalTitle">Thêm địa chỉ</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form id="addressForm">
+                                  <input type="hidden" id="addressId">
+                                  <div class="mb-2">
+                                    <label class="form-label">Tên người nhận</label>
+                                    <input type="text" class="form-control" id="addressName" required>
+                                  </div>
+                                  <div class="mb-2">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="addressPhone" required>
+                                  </div>
+                                  <div class="mb-2">
+                                    <label class="form-label">Tỉnh/Thành phố</label>
+                                    <select class="form-select" id="provinceSelect" required></select>
+                                  </div>
+                                  <div class="mb-2">
+                                    <label class="form-label">Quận/Huyện</label>
+                                    <select class="form-select" id="districtSelect" required></select>
+                                  </div>
+                                  <div class="mb-2">
+                                    <label class="form-label">Phường/Xã</label>
+                                    <select class="form-select" id="wardSelect" required></select>
+                                  </div>
+                                  <div class="mb-2">
+                                    <label class="form-label">Địa chỉ chi tiết (số nhà, xóm/thôn...)</label>
+                                    <input type="text" class="form-control" id="addressDetail" required>
+                                  </div>
+                                  <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="isDefaultAddress">
+                                    <label class="form-check-label" for="isDefaultAddress">Đặt làm địa chỉ mặc định</label>
+                                  </div>
+                                  <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Lưu địa chỉ</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Kết thúc modal địa chỉ -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History Section -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0">Lịch sử đơn hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="orderList">
+                            <!-- Orders will be loaded here -->
+                        </div>
+                        <div class="text-center mt-3">
+                            <button id="loadMoreBtn" class="btn btn-outline-primary">Xem thêm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="orderDetailsContent">
+                        <!-- Order details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white">
+      <div class="container">
+        <div class="row">
+        <div class="col-lg-3 p-3">
+          <a href="#"><img src="images/3K%20IMG/shop.png" alt="" /></a>
+          <p class="pt-3">
+          West City, 28/43 Siêu đô thị, Trái Đất <br />Khu phố Suginami, Tokyo, Thế kỷ 22 <br />Đảo Cacao, Biển Tân Thế Giới
+          </p>
+          <p class="pt-3">
+          <i class="fas fa-phone"></i> 0123456789
+        </div>
+        <div class="col-lg-3 p-3">
+          <p>Về chúng tôi</p>
+          <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="Contact.html" class="nav-link">Giới Thiệu Về MUSIC LOVER</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Trang Chủ</a>
+          </li>
+          <li class="nav-item">
+            <a href="Product.html" class="nav-link">Sản Phẩm</a>
+          </li>
+          </ul>
+        </div>
+        
+        <div class="col-lg-3 p-3">
+          <p>Địa chỉ chi tiết</p>
+          <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="#" class="nav-link"
+            >Tầng cao nhất, Tháp Korin, Cõi Trời </a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link"
+            >Động Going Merry, Cảng Biển Foosha</a
+            >
+          </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/carousel-control.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/profile-address.js"></script>
+    <script>
+        let currentPage = 1;
+        const ordersPerPage = 5;
+
+        // Check if user is logged in
+        function checkLogin() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('signupLink').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'block';
+                loadUserProfile();
+                loadOrders();
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Load user profile
+        function loadUserProfile() {
+            const token = localStorage.getItem('token');
+            fetch('http://localhost:3000/api/user/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const userData = Array.isArray(data) ? data[0] : (data.user || data);
+                
+                if (!userData) {
+                    throw new Error('Không tìm thấy thông tin người dùng');
+                }
+
+                document.getElementById('username').value = userData.username || '';
+                document.getElementById('email').value = userData.email || '';
+                document.getElementById('fullname').value = userData.fullname || '';
+                document.getElementById('phone').value = userData.phone || '';
+                document.getElementById('address').value = userData.address || '';
+                document.getElementById('role').value = userData.role === 'admin' ? 'Quản trị viên' : 'Người dùng';
+            })
+            .catch(error => {
+                console.error('Error loading profile:', error);
+                if (error.message.includes('401') || error.message.includes('403')) {
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Có lỗi xảy ra khi tải thông tin người dùng: ' + error.message);
+                }
+            });
+        }
+
+        // Load orders
+        function loadOrders() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            fetch(`http://localhost:3000/api/orders?page=${currentPage}&limit=${ordersPerPage}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                        throw new Error('Phiên đăng nhập đã hết hạn');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const orderList = document.getElementById('orderList');
+                if (currentPage === 1) {
+                    orderList.innerHTML = '';
+                }
+
+                if (!data.orders || data.orders.length === 0) {
+                    if (currentPage === 1) {
+                        orderList.innerHTML = '<div class="text-center p-3">Bạn chưa có đơn hàng nào</div>';
+                    }
+                    document.getElementById('loadMoreBtn').style.display = 'none';
+                    return;
+                }
+
+                data.orders.forEach(order => {
+                    const orderCard = createOrderCard(order);
+                    orderList.appendChild(orderCard);
+                });
+
+                // Show/hide load more button based on whether there are more orders
+                document.getElementById('loadMoreBtn').style.display = 
+                    data.hasMore ? 'block' : 'none';
+            })
+            .catch(error => {
+                console.error('Error loading orders:', error);
+                const orderList = document.getElementById('orderList');
+                if (currentPage === 1) {
+                    orderList.innerHTML = `<div class="text-center p-3 text-danger">${error.message || 'Có lỗi xảy ra khi tải danh sách đơn hàng'}</div>`;
+                }
+                document.getElementById('loadMoreBtn').style.display = 'none';
+            });
+        }
+
+        // Create order card
+        function createOrderCard(order) {
+            const div = document.createElement('div');
+            div.className = 'order-card';
+            div.innerHTML = `
+                <div class="order-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Mã đơn hàng:</strong>
+                        <a href="#" class="ms-2" onclick="showOrderDetails('${order.order_code}')">${order.order_code}</a>
+                    </div>
+                    <span class="status-badge status-${order.status.toLowerCase()}">${getStatusText(order.status)}</span>
+                </div>
+                <div class="order-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Ngày đặt:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
+                            <p><strong>Tổng tiền:</strong> ${formatCurrency(order.final_amount)}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Phương thức thanh toán:</strong> ${getPaymentMethodText(order.payment_method)}</p>
+                            <p><strong>Trạng thái thanh toán:</strong> ${getPaymentStatusText(order.payment_status)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+
+        // Show order details
+        function showOrderDetails(orderCode) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            console.log('Đang tải chi tiết đơn hàng:', orderCode);
+
+            fetch(`http://localhost:3000/api/orders/${orderCode}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                        throw new Error('Phiên đăng nhập đã hết hạn');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Chi tiết đơn hàng:', data);
+                if (!data) {
+                    throw new Error('Không tìm thấy thông tin đơn hàng');
+                }
+
+                const modalContent = document.getElementById('orderDetailsContent');
+                modalContent.innerHTML = `
+                    <div class="mb-4">
+                        <h6>Thông tin đơn hàng</h6>
+                        <p><strong>Mã đơn hàng:</strong> ${data.order_code}</p>
+                        <p><strong>Ngày đặt:</strong> ${new Date(data.created_at).toLocaleString()}</p>
+                        <p><strong>Trạng thái:</strong> ${getStatusText(data.status)}</p>
+                        <p><strong>Phương thức thanh toán:</strong> ${getPaymentMethodText(data.payment_method)}</p>
+                        <p><strong>Trạng thái thanh toán:</strong> ${getPaymentStatusText(data.payment_status)}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h6>Thông tin giao hàng</h6>
+                        <p><strong>Người nhận:</strong> ${data.shipping_name}</p>
+                        <p><strong>Số điện thoại:</strong> ${data.shipping_phone}</p>
+                        <p><strong>Địa chỉ:</strong> ${data.shipping_address}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h6>Chi tiết sản phẩm</h6>
+                        ${data.order_details && data.order_details.length > 0 ? 
+                            data.order_details.map(item => `
+                            <div class="order-item">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>${item.product_name}</strong></p>
+                                        <p>Số lượng: ${item.quantity}</p>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <p>Đơn giá: ${formatCurrency(item.price)}</p>
+                                        <p>Thành tiền: ${formatCurrency(item.total_price)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            `).join('') : 
+                            '<div class="text-center p-3">Không có thông tin chi tiết sản phẩm</div>'
+                        }
+                    </div>
+                    <div class="text-end">
+                        <h5>Tổng cộng: ${formatCurrency(data.final_amount)}</h5>
+                    </div>
+                `;
+                new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();
+            })
+            .catch(error => {
+                console.error('Error loading order details:', error);
+                const modalContent = document.getElementById('orderDetailsContent');
+                modalContent.innerHTML = `<div class="text-center p-3 text-danger">${error.message || 'Có lỗi xảy ra khi tải chi tiết đơn hàng'}</div>`;
+                new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();
+            });
+        }
+
+        // Helper functions
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Chờ xử lý',
+                'processing': 'Đang xử lý',
+                'shipping': 'Đang giao hàng',
+                'completed': 'Hoàn thành',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getPaymentMethodText(method) {
+            const methodMap = {
+                'cod': 'Thanh toán khi nhận hàng',
+                'bank_transfer': 'Chuyển khoản ngân hàng',
+                'credit_card': 'Thẻ tín dụng/ghi nợ'
+            };
+            return methodMap[method] || method;
+        }
+
+        function getPaymentStatusText(status) {
+            const statusMap = {
+                'pending': 'Chờ thanh toán',
+                'paid': 'Đã thanh toán',
+                'failed': 'Thanh toán thất bại',
+                'refunded': 'Đã hoàn tiền'
+            };
+            return statusMap[status] || status;
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Event listeners
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            const fullnameInput = document.getElementById('fullname');
+            const phoneInput = document.getElementById('phone');
+            const addressInput = document.getElementById('address');
+
+            if (this.textContent === 'Cập nhật thông tin') {
+                fullnameInput.readOnly = false;
+                phoneInput.readOnly = false;
+                addressInput.readOnly = false;
+                this.textContent = 'Lưu thông tin';
+            } else {
+                const token = localStorage.getItem('token');
+                const formData = {
+                    fullname: fullnameInput.value,
+                    phone: phoneInput.value,
+                    address: addressInput.value
+                };
+
+                fetch('http://localhost:3000/api/user/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Cập nhật thông tin thành công!');
+                    fullnameInput.readOnly = true;
+                    phoneInput.readOnly = true;
+                    addressInput.readOnly = true;
+                    this.textContent = 'Cập nhật thông tin';
+                    loadUserProfile();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi cập nhật thông tin');
+                });
+            }
+        });
+
+        document.getElementById('loadMoreBtn').addEventListener('click', function() {
+            currentPage++;
+            loadOrders();
+        });
+
+        // Initialize
+        checkLogin();
+    </script>
+  </body>
+</html> 

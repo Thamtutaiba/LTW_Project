@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Shop</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-black border-bot fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="images/3K%20IMG/shop.png" alt="" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon bg-white"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="Product.html">SẢN PHẨM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">TIN TỨC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">KHUYẾN MÃI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Contact.html">LIÊN HỆ</a>
+            </li>
+          </ul>
+          <div class="d-flex align-items-center">
+            <a href="#" class="nav-link text-white me-3" id="searchIcon">
+              <i class="fas fa-search"></i>
+            </a>
+            <div class="dropdown me-3">
+              <a
+                href="#"
+                class="nav-link text-white dropdown-toggle"
+                id="userIcon"
+                data-bs-toggle="dropdown"
+              >
+                <i class="fas fa-user"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="login.html">Đăng nhập</a>
+                </li>
+                <li><a class="dropdown-item" href="signup.html">Đăng ký</a></li>
+                <li>
+                  <a class="dropdown-item d-none" href="#" id="logoutBtn"
+                    >Đăng xuất</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <a href="#" class="nav-link text-white" id="cartIcon">
+              <i class="fas fa-shopping-cart"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="login-container">
+      <div class="login-form">
+        <h2>Đăng nhập</h2>
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="username" class="form-label">Tên đăng nhập</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Nhập tên đăng nhập"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Nhập mật khẩu của bạn"
+                required
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-login">
+            <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+          </button>
+
+          <div class="text-center my-3">
+            <a href="forgot-password.html" class="text-decoration-none">
+              <i class="fas fa-key"></i> Quên mật khẩu?
+            </a>
+          </div>
+
+          <p class="form-text">
+            Chưa có tài khoản? <a href="signup.html">Đăng ký ngay</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

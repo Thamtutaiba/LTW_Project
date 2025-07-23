@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý khách hàng - Admin Panel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="../css/admin.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                  <i class="fas fa-home"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                  <i class="fas fa-box"></i> Sản phẩm
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="orders.html">
+                  <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="customers.html">
+                  <i class="fas fa-users"></i> Khách hàng
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="roles.html">
+                  <i class="fas fa-users-cog"></i> Vai trò & Quyền
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reports.html">
+                  <i class="fas fa-chart-bar"></i> Báo cáo
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">Quản lý khách hàng</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button
+                class="btn btn-primary me-2"
+                onclick="showSendEmailModal()"
+              >
+                <i class="fas fa-envelope"></i> Gửi email
+              </button>
+              <button class="btn btn-success" onclick="showCustomerTierModal()">
+                <i class="fas fa-crown"></i> Phân loại khách hàng
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <input
+                type="text"
+                class="form-control"
+                id="searchInput"
+                placeholder="Tìm kiếm..."
+              />
+            </div>
+            <div class="col-md-2">
+              <select class="form-select" id="tierFilter">
+                <option value="">Hạng khách hàng</option>
+                <option value="1">Đồng</option>
+                <option value="2">Bạc</option>
+                <option value="3">Vàng</option>
+                <option value="4">Kim cương</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select" id="sortBy">
+                <option value="points">Điểm tích lũy</option>
+                <option value="orders">Số đơn hàng</option>
+                <option value="spent">Tổng chi tiêu</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Customers table -->
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên</th>
+                  <th>Email</th>
+                  <th>Điện thoại</th>
+                  <th>Hạng</th>
+                  <th>Điểm</th>
+                  <th>Số đơn hàng</th>
+                  <th>Tổng chi tiêu</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody">
+                <!-- Customers will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Customer details modal -->
+    <div class="modal fade" id="customerDetailsModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Chi tiết khách hàng</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h6>Thông tin cá nhân</h6>
+                <p id="customerInfo"></p>
+              </div>
+              <div class="col-md-6">
+                <h6>Thống kê</h6>
+                <p id="customerStats"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h6>Lịch sử đơn hàng</h6>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody id="orderHistoryBody">
+                      <!-- Order history will be loaded here -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Send email modal -->
+    <div class="modal fade" id="sendEmailModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Gửi email thông báo</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="emailForm">
+              <div class="mb-3">
+                <label class="form-label">Người nhận</label>
+                <select class="form-select" id="emailRecipients" multiple>
+                  <option value="all">Tất cả khách hàng</option>
+                  <option value="tier1">Khách hàng hạng Đồng</option>
+                  <option value="tier2">Khách hàng hạng Bạc</option>
+                  <option value="tier3">Khách hàng hạng Vàng</option>
+                  <option value="tier4">Khách hàng hạng Kim cương</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tiêu đề</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="emailSubject"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nội dung</label>
+                <textarea
+                  class="form-control"
+                  id="emailContent"
+                  rows="5"
+                  required
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button type="button" class="btn btn-primary" onclick="sendEmail()">
+              Gửi email
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer tier modal -->
+    <div class="modal fade" id="customerTierModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Phân loại khách hàng</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Hạng</th>
+                    <th>Điểm tối thiểu</th>
+                    <th>Giảm giá (%)</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="tierTableBody">
+                  <!-- Customer tiers will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="showAddTierModal()">
+              <i class="fas fa-plus"></i> Thêm hạng mới
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add tier modal -->
+    <div class="modal fade" id="addTierModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm hạng khách hàng</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="tierForm">
+              <div class="mb-3">
+                <label class="form-label">Tên hạng</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tierName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Điểm tối thiểu</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minPoints"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Giảm giá (%)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="discountPercent"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control" id="tierDescription"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveTier()">
+              Lưu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews modal -->
+    <div class="modal fade" id="reviewsModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Đánh giá sản phẩm</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Sản phẩm</th>
+                    <th>Đánh giá</th>
+                    <th>Nội dung</th>
+                    <th>Ngày đánh giá</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="reviewsTableBody">
+                  <!-- Reviews will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin/customers.js"></script>
+    <script>
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        loadCustomers();
+        setupEventListeners();
+      });
+
+      // Thiết lập các event listener
+      function setupEventListeners() {
+        // Tìm kiếm và lọc
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", filterCustomers);
+        document
+          .getElementById("tierFilter")
+          .addEventListener("change", filterCustomers);
+        document
+          .getElementById("sortBy")
+          .addEventListener("change", filterCustomers);
+      }
+
+      // Tải danh sách khách hàng
+      function loadCustomers() {
+        const token = localStorage.getItem("token");
+        fetch("http://localhost:3000/api/admin/customers", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((customers) => {
+            const tbody = document.getElementById("customersTableBody");
+            tbody.innerHTML = "";
+
+            customers.forEach((customer) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+                            <td>${customer.id}</td>
+                            <td>${customer.fullname || customer.username}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phone || "N/A"}</td>
+                            <td>
+                                <span class="badge bg-${getTierColor(
+                                  customer.tier || 1
+                                )}">
+                                    ${getTierName(customer.tier || 1)}
+                                </span>
+                            </td>
+                            <td>${customer.points || 0}</td>
+                            <td>${customer.total_orders || 0}</td>
+                            <td>${formatCurrency(
+                              customer.total_spent || 0
+                            )}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="viewCustomerDetails('${
+                                  customer.id
+                                }')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" onclick="editCustomer('${
+                                  customer.id
+                                }')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                        `;
+              tbody.appendChild(tr);
+            });
+          })
+          .catch((error) => {
+            console.error("Error loading customers:", error);
+            alert("Có lỗi xảy ra khi tải danh sách khách hàng");
+          });
+      }
+
+      // Lọc khách hàng
+      function filterCustomers() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const tierFilter = document.getElementById("tierFilter").value;
+        const sortBy = document.getElementById("sortBy").value;
+
+        const rows = document.querySelectorAll("#customersTableBody tr");
+        const sortedRows = Array.from(rows);
+
+        // Sắp xếp
+        sortedRows.sort((a, b) => {
+          const aValue = getSortValue(a, sortBy);
+          const bValue = getSortValue(b, sortBy);
+          return bValue - aValue;
+        });
+
+        // Lọc và hiển thị
+        sortedRows.forEach((row) => {
+          const name = row
+            .querySelector("td:nth-child(2)")
+            .textContent.toLowerCase();
+          const email = row
+            .querySelector("td:nth-child(3)")
+            .textContent.toLowerCase();
+          const tier = row.querySelector("td:nth-child(5) span").textContent;
+
+          const matchesSearch =
+            name.includes(searchTerm) || email.includes(searchTerm);
+          const matchesTier = !tierFilter || tier === getTierName(tierFilter);
+
+          row.style.display = matchesSearch && matchesTier ? "" : "none";
+        });
+      }
+
+      // Xem chi tiết khách hàng
+      function viewCustomerDetails(customerId) {
+        const token = localStorage.getItem("token");
+        fetch(`http://localhost:3000/api/admin/customers/${customerId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((customer) => {
+            // Cập nhật thông tin cá nhân
+            document.getElementById("customerInfo").innerHTML = `
+                        <p><strong>Tên:</strong> ${
+                          customer.fullname || customer.username
+                        }</p>
+                        <p><strong>Email:</strong> ${customer.email}</p>
+                        <p><strong>Điện thoại:</strong> ${
+                          customer.phone || "N/A"
+                        }</p>
+                        <p><strong>Địa chỉ:</strong> ${
+                          customer.address || "N/A"
+                        }</p>
+                        <p><strong>Ngày tham gia:</strong> ${formatDate(
+                          customer.created_at || customer.joinDate
+                        )}</p>
+                    `;
+
+            // Cập nhật thống kê
+            document.getElementById("customerStats").innerHTML = `
+                        <p><strong>Hạng:</strong> ${getTierName(
+                          customer.tier || 1
+                        )}</p>
+                        <p><strong>Điểm tích lũy:</strong> ${
+                          customer.points || 0
+                        }</p>
+                        <p><strong>Số đơn hàng:</strong> ${
+                          customer.total_orders || 0
+                        }</p>
+                        <p><strong>Tổng chi tiêu:</strong> ${formatCurrency(
+                          customer.total_spent || 0
+                        )}</p>
+                    `;
+
+            // Cập nhật lịch sử đơn hàng
+            const orderHistoryBody =
+              document.getElementById("orderHistoryBody");
+            orderHistoryBody.innerHTML = "";
+
+            // Kiểm tra xem có orders không và xử lý an toàn
+            if (customer.orders && Array.isArray(customer.orders)) {
+              customer.orders.forEach((order) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                              <td>${order.id}</td>
+                              <td>${formatDate(order.created_at)}</td>
+                              <td>${formatCurrency(order.total_amount)}</td>
+                              <td><span class="badge bg-${getOrderStatusColor(
+                                order.status
+                              )}">${order.status}</span></td>
+                          `;
+                orderHistoryBody.appendChild(tr);
+              });
+            } else {
+              // Hiển thị thông báo nếu không có đơn hàng
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+                            <td colspan="4" class="text-center text-muted">Chưa có đơn hàng nào</td>
+                        `;
+              orderHistoryBody.appendChild(tr);
+            }
+
+            // Hiển thị modal
+            const modal = new bootstrap.Modal(
+              document.getElementById("customerDetailsModal")
+            );
+            modal.show();
+          })
+          .catch((error) => {
+            console.error("Error loading customer details:", error);
+            alert("Có lỗi xảy ra khi tải thông tin khách hàng");
+          });
+      }
+
+      // Gửi email thông báo
+      function showSendEmailModal() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("sendEmailModal")
+        );
+        modal.show();
+      }
+
+      function sendEmail() {
+        const recipients = Array.from(
+          document.getElementById("emailRecipients").selectedOptions
+        ).map((option) => option.value);
+        const subject = document.getElementById("emailSubject").value;
+        const content = document.getElementById("emailContent").value;
+
+        if (!recipients.length || !subject || !content) {
+          alert("Vui lòng điền đầy đủ thông tin");
+          return;
+        }
+
+        fetch("/api/customers/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipients,
+            subject,
+            content,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Gửi email thành công");
+              bootstrap.Modal.getInstance(
+                document.getElementById("sendEmailModal")
+              ).hide();
+            } else {
+              alert("Có lỗi xảy ra khi gửi email");
+            }
+          })
+          .catch((error) => {
+            console.error("Error sending email:", error);
+            alert("Có lỗi xảy ra khi gửi email");
+          });
+      }
+
+      // Phân loại khách hàng
+      function showCustomerTierModal() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("customerTierModal")
+        );
+        modal.show();
+      }
+
+      function updateCustomerTiers() {
+        const tierSettings = {
+          tier1: {
+            name: "Đồng",
+            minPoints: 0,
+            discount: 0,
+          },
+          tier2: {
+            name: "Bạc",
+            minPoints: 1000,
+            discount: 5,
+          },
+          tier3: {
+            name: "Vàng",
+            minPoints: 5000,
+            discount: 10,
+          },
+          tier4: {
+            name: "Kim cương",
+            minPoints: 10000,
+            discount: 15,
+          },
+        };
+
+        fetch("/api/customers/update-tiers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(tierSettings),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Cập nhật phân loại khách hàng thành công");
+              loadCustomers();
+              bootstrap.Modal.getInstance(
+                document.getElementById("customerTierModal")
+              ).hide();
+            } else {
+              alert("Có lỗi xảy ra khi cập nhật phân loại khách hàng");
+            }
+          })
+          .catch((error) => {
+            console.error("Error updating customer tiers:", error);
+            alert("Có lỗi xảy ra khi cập nhật phân loại khách hàng");
+          });
+      }
+
+      // Hàm tiện ích
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
+      }
+
+      function formatDate(date) {
+        return new Date(date).toLocaleDateString("vi-VN");
+      }
+
+      function getTierName(tier) {
+        const tiers = {
+          1: "Đồng",
+          2: "Bạc",
+          3: "Vàng",
+          4: "Kim cương",
+        };
+        return tiers[tier] || "Chưa phân loại";
+      }
+
+      function getTierColor(tier) {
+        const colors = {
+          1: "secondary",
+          2: "info",
+          3: "warning",
+          4: "primary",
+        };
+        return colors[tier] || "secondary";
+      }
+
+      function getOrderStatusColor(status) {
+        const colors = {
+          pending: "warning",
+          processing: "info",
+          shipping: "primary",
+          completed: "success",
+          cancelled: "danger",
+        };
+        return colors[status] || "secondary";
+      }
+
+      function getSortValue(row, sortBy) {
+        switch (sortBy) {
+          case "points":
+            return parseInt(row.querySelector("td:nth-child(6)").textContent);
+          case "orders":
+            return parseInt(row.querySelector("td:nth-child(7)").textContent);
+          case "spent":
+            return parseFloat(
+              row
+                .querySelector("td:nth-child(8)")
+                .textContent.replace(/[^0-9.-]+/g, "")
+            );
+          default:
+            return 0;
+        }
+      }
+    </script>
+  </body>
+</html>

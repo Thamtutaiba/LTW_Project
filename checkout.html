@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanh Toán</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" href="images/3K IMG/logo.svg" />
+    <link rel="stylesheet" href="css/checkout.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/owl.carousel.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-black border-bot fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="images/3K%20IMG/shop.png" alt="" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon bg-white"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="Product.html"
+                >SẢN PHẨM</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="news.html">TIN TỨC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">KHUYẾN MÃI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Contact.html">LIÊN HỆ</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <a href="#" class="nav-link text-white me-3" id="searchIcon"
+              ><i class="fas fa-search"></i
+            ></a>
+            <div class="dropdown me-3">
+              <a
+                href="#"
+                class="nav-link text-white dropdown-toggle"
+                id="userIcon"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user"></i>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="userIcon"
+              >
+                <li>
+                  <a class="dropdown-item" href="login.html" id="loginLink"
+                    >Đăng nhập</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="signup.html" id="signupLink"
+                    >Đăng ký</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="profile.html" id="ProfileLink"
+                    >Trang cá nhân</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    id="logoutBtn"
+                    style="display: none"
+                    >Đăng xuất</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <a href="#" class="nav-link text-white" id="cartIcon"
+              ><i class="fas fa-shopping-cart"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Checkout Content -->
+    <div class="container checkout-container">
+      <h2 class="text-center mb-4">Thanh Toán</h2>
+
+      <div id="checkoutStatus"></div>
+
+      <!-- Add popup HTML -->
+      <div id="orderSuccessPopup" class="popup-overlay">
+        <div class="popup-content">
+          <h3>Đặt Hàng Thành Công!</h3>
+          <p>
+            Đơn hàng của bạn đã được tạo thành công. Cảm ơn bạn đã mua hàng!
+          </p>
+          <button onclick="closePopup()">Tiếp Tục Mua Sắm</button>
+        </div>
+      </div>
+
+      <div class="checkout-grid">
+        <!-- Left Column: Order Summary -->
+        <div class="order-summary">
+          <h3>Đơn Hàng Của Bạn</h3>
+          <div id="cartItems">
+            <!-- Cart items will be loaded here -->
+          </div>
+
+          <div class="total-section">
+            <div class="total-row">
+              <span>Tạm tính:</span>
+              <span id="subtotal">0 VNĐ</span>
+            </div>
+            <div class="total-row">
+              <span>Phí vận chuyển:</span>
+              <span id="shippingFee">30,000 VNĐ</span>
+            </div>
+            <div class="total-row final">
+              <span>Tổng cộng:</span>
+              <span id="totalAmount">0 VNĐ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Shipping Address and Payment -->
+        <div class="recipient-details">
+          <h3>Địa Chỉ Giao Hàng</h3>
+          <div id="shippingAddressContainer">
+            <!-- Shipping addresses will be loaded here -->
+          </div>
+          <div
+            id="noAddressAlert"
+            class="alert alert-warning"
+            style="display: none"
+          >
+            <div class="text-center">
+              <i class="fas fa-map-marker-alt fa-3x mb-3 text-warning"></i>
+              <h5>Chưa có địa chỉ giao hàng</h5>
+              <p>
+                Bạn cần thêm ít nhất một địa chỉ giao hàng để có thể đặt hàng.
+              </p>
+              <a href="profile.html" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Thêm Địa Chỉ Giao Hàng
+              </a>
+            </div>
+          </div>
+
+          <div class="payment-methods mt-4">
+            <h4>Phương Thức Thanh Toán</h4>
+            <div class="payment-option selected" data-method="cod">
+              <i class="fas fa-money-bill-wave"></i>
+              <div>
+                <h5>Thanh toán khi nhận hàng (COD)</h5>
+                <p>Thanh toán bằng tiền mặt khi nhận hàng</p>
+              </div>
+            </div>
+            <div class="payment-option" data-method="bank_transfer">
+              <i class="fas fa-university"></i>
+              <div>
+                <h5>Chuyển khoản ngân hàng</h5>
+                <p>Chuyển khoản trực tiếp vào tài khoản ngân hàng</p>
+              </div>
+            </div>
+            <div class="payment-option" data-method="credit_card">
+              <i class="fas fa-credit-card"></i>
+              <div>
+                <h5>Thẻ tín dụng/Thẻ ghi nợ</h5>
+                <p>Thanh toán an toàn qua cổng thanh toán</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="checkoutForm" class="mt-4">
+            <button
+              type="button"
+              id="checkoutBtn"
+              class="checkout-btn"
+              onclick="handleCheckout()"
+            >
+              Đặt Hàng
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/product-category-loader.js"></script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/carousel-control.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/product-loader.js"></script>
+    <script src="js/cart.js"></script>
+
+    <script>
+      let selectedPaymentMethod = "cod";
+      let userAddresses = [];
+      let selectedAddressId = null;
+      let cartItems = [];
+      let debounceTimer = null;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Page loaded, initializing...");
+        loadUserAddresses();
+        loadCartItems();
+        setupPaymentMethods();
+      });
+
+      function setupPaymentMethods() {
+        console.log("Setting up event listeners...");
+        // Payment method selection
+        document.querySelectorAll(".payment-option").forEach((option) => {
+          option.addEventListener("click", function () {
+            document
+              .querySelectorAll(".payment-option")
+              .forEach((opt) => opt.classList.remove("selected"));
+            this.classList.add("selected");
+            selectedPaymentMethod = this.dataset.method;
+            console.log("Selected payment method:", selectedPaymentMethod);
+          });
+        });
+      }
+
+      async function handleCheckout() {
+        console.log("handleCheckout called");
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        const originalText = checkoutBtn.innerHTML;
+
+        // Show processing state
+        checkoutBtn.disabled = true;
+        checkoutBtn.innerHTML = `
+          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          Đang xử lý...
+        `;
+
+        if (!selectedAddressId) {
+          console.log("No address selected");
+          alert("Vui lòng chọn địa chỉ giao hàng");
+          checkoutBtn.disabled = false;
+          checkoutBtn.innerHTML = originalText;
+          return false;
+        }
+
+        try {
+          const token = localStorage.getItem("token");
+          console.log("Token:", token ? "exists" : "missing");
+          if (!token) {
+            alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+            window.location.href = "login.html";
+            return false;
+          }
+
+          const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+          console.log("Cart items:", cartItems);
+          if (!cartItems || cartItems.length === 0) {
+            alert(
+              "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi đặt hàng."
+            );
+            window.location.href = "Product.html";
+            return false;
+          }
+
+          console.log("Sending order request...", {
+            items: cartItems,
+            payment_method: selectedPaymentMethod,
+            address_id: selectedAddressId,
+          });
+
+          const response = await fetch("http://localhost:3000/api/orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              items: cartItems.map((item) => ({
+                product_id: item.id,
+                quantity: item.quantity,
+              })),
+              payment_method: selectedPaymentMethod,
+              address_id: selectedAddressId,
+            }),
+          });
+
+          console.log("Response status:", response.status);
+          const data = await response.json();
+          console.log("Response data:", data);
+
+          if (!response.ok) {
+            throw new Error(data.message || "Có lỗi xảy ra khi đặt hàng");
+          }
+
+          if (data.missingInfo) {
+            alert("Vui lòng chọn địa chỉ giao hàng hợp lệ");
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = originalText;
+            return false;
+          }
+
+          // Clear cart
+          try {
+            console.log("Clearing cart...");
+
+            // Update button to show clearing state
+            checkoutBtn.innerHTML = `
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              Đang xóa giỏ hàng...
+            `;
+
+            const clearCartResponse = await fetch(
+              "http://localhost:3000/api/cart/clear",
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            console.log(
+              "Clear cart response status:",
+              clearCartResponse.status
+            );
+            if (!clearCartResponse.ok) {
+              const clearCartData = await clearCartResponse.text();
+              console.warn("Failed to clear cart on server:", clearCartData);
+            }
+          } catch (error) {
+            console.error("Error clearing cart:", error);
+          }
+
+          // Clear local cart
+          localStorage.removeItem("cart");
+          console.log("Local cart cleared");
+
+          // Show success popup instead of redirecting
+          if (data.order_id) {
+            showOrderSuccessPopup(data.order_code);
+          } else {
+            throw new Error("Không nhận được mã đơn hàng từ server");
+          }
+        } catch (error) {
+          console.error("Error during checkout:", error);
+
+          let errorMessage =
+            error.message ||
+            "Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.";
+
+          // Handle specific error types
+          if (
+            error.message.includes("Failed to fetch") ||
+            error.message.includes("NetworkError")
+          ) {
+            errorMessage =
+              "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại.";
+          } else if (
+            error.message.includes("401") ||
+            error.message.includes("403")
+          ) {
+            errorMessage =
+              "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.";
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 2000);
+          }
+
+          document.getElementById("checkoutStatus").innerHTML = `
+            <div class="alert alert-danger">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              ${errorMessage}
+            </div>
+          `;
+
+          checkoutBtn.disabled = false;
+          checkoutBtn.innerHTML = originalText;
+        }
+      }
+
+      function showOrderSuccessPopup(orderCode) {
+        const popup = document.getElementById("orderSuccessPopup");
+        const popupContent = popup.querySelector(".popup-content");
+
+        if (orderCode) {
+          popupContent.innerHTML = `
+            <div class="text-center">
+              <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+              <h3>Đặt Hàng Thành Công!</h3>
+              <p class="mb-3">
+                Đơn hàng của bạn đã được tạo thành công với mã đơn hàng:
+                <strong class="text-primary">${orderCode}</strong>
+              </p>
+              <p class="text-muted mb-4">
+                Cảm ơn bạn đã mua hàng! Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.
+              </p>
+              <div class="d-flex gap-2 justify-content-center">
+                <button onclick="window.location.href='profile.html'" class="btn btn-outline-primary">
+                  Xem đơn hàng
+                </button>
+                <button onclick="closePopup()" class="btn btn-primary">
+                  Tiếp tục mua sắm
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        popup.style.display = "block";
+      }
+
+      function closePopup() {
+        const popup = document.getElementById("orderSuccessPopup");
+        popup.style.display = "none";
+        // Redirect to home page
+        window.location.href = "index.html";
+      }
+
+      async function loadUserAddresses() {
+        try {
+          // Show loading state
+          const container = document.getElementById("shippingAddressContainer");
+          container.innerHTML = `
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Đang tải địa chỉ...</span>
+              </div>
+              <p class="mt-2 text-muted">Đang tải địa chỉ giao hàng...</p>
+            </div>
+          `;
+
+          const response = await fetch(
+            "http://localhost:3000/api/admin/addresses",
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || "Lỗi khi tải địa chỉ");
+          }
+
+          userAddresses = data;
+          displayShippingAddresses(userAddresses);
+        } catch (error) {
+          console.error("Error loading user addresses:", error);
+
+          // Show error message in container
+          const container = document.getElementById("shippingAddressContainer");
+          container.innerHTML = `
+            <div class="alert alert-danger text-center">
+              <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+              <h5>Không thể tải địa chỉ giao hàng</h5>
+              <p>Có lỗi xảy ra khi tải danh sách địa chỉ. Vui lòng thử lại.</p>
+              <button class="btn btn-primary" onclick="loadUserAddresses()">
+                <i class="fas fa-redo me-2"></i>Thử lại
+              </button>
+            </div>
+          `;
+
+          // Also disable checkout button
+          document.getElementById("checkoutBtn").disabled = true;
+        }
+      }
+
+      function displayShippingAddresses(addresses) {
+        console.log("Displaying shipping addresses:", addresses);
+        const container = document.getElementById("shippingAddressContainer");
+
+        if (!addresses || addresses.length === 0) {
+          console.log("No addresses available");
+          showNoAddressAlert();
+          return;
+        }
+
+        // Tìm địa chỉ mặc định hoặc chọn địa chỉ đầu tiên
+        const defaultAddress =
+          addresses.find((addr) => addr.is_default) || addresses[0];
+        selectedAddressId = defaultAddress.id;
+
+        container.innerHTML =
+          addresses
+            .map(
+              (address) => `
+          <div class="address-option ${
+            address.id === selectedAddressId ? "selected" : ""
+          }"
+               data-address-id="${address.id}"
+               onclick="selectAddress(${address.id})">
+            <div class="address-info">
+              <div class="address-name-phone">
+                <strong>${address.name}</strong> - ${address.phone}
+              </div>
+              <div class="address-detail">
+                ${address.address_detail}, ${address.ward_name}, ${
+                address.district_name
+              }, ${address.province_name}
+              </div>
+              ${
+                address.is_default
+                  ? '<span class="default-badge">Mặc định</span>'
+                  : ""
+              }
+            </div>
+            <div class="address-radio">
+              <input type="radio" name="shippingAddress" value="${address.id}"
+                     ${address.id === selectedAddressId ? "checked" : ""}
+                     aria-label="Chọn địa chỉ ${address.name}">
+            </div>
+          </div>
+        `
+            )
+            .join("") +
+          `
+          <div class="text-center mt-3">
+            <a href="profile.html" class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-plus me-2"></i>Thêm địa chỉ mới
+            </a>
+          </div>
+        `;
+
+        updateCheckoutButton();
+      }
+
+      function selectAddress(addressId) {
+        selectedAddressId = addressId;
+
+        // Update UI
+        document.querySelectorAll(".address-option").forEach((option) => {
+          option.classList.remove("selected");
+          const radio = option.querySelector('input[type="radio"]');
+          radio.checked = false;
+        });
+
+        const selectedOption = document.querySelector(
+          `[data-address-id="${addressId}"]`
+        );
+        selectedOption.classList.add("selected");
+        selectedOption.querySelector('input[type="radio"]').checked = true;
+
+        updateCheckoutButton();
+
+        // Show brief success feedback
+        const addressInfo = selectedOption.querySelector(
+          ".address-name-phone"
+        ).textContent;
+        console.log(`Đã chọn địa chỉ giao hàng: ${addressInfo}`);
+      }
+
+      function showNoAddressAlert() {
+        document.getElementById("shippingAddressContainer").style.display =
+          "none";
+        document.getElementById("noAddressAlert").style.display = "block";
+        document.getElementById("checkoutBtn").disabled = true;
+      }
+
+      function updateCheckoutButton() {
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        checkoutBtn.disabled = !selectedAddressId;
+        console.log("Checkout button disabled:", !selectedAddressId);
+      }
+
+      async function loadCartItems() {
+        try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            console.error("No token found");
+            return;
+          }
+
+          // Get cart items from localStorage first
+          const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+          if (cartItems.length === 0) {
+            displayCartItems([]);
+            return;
+          }
+
+          // Then fetch product details from server
+          const response = await fetch("http://localhost:3000/api/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ items: cartItems }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const items = await response.json();
+          displayCartItems(items);
+        } catch (error) {
+          console.error("Error loading cart items:", error);
+          // Fallback to local cart data
+          const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+          displayCartItems(cartItems);
+        }
+      }
+
+      function displayCartItems(items) {
+        const cartItemsContainer = document.getElementById("cartItems");
+        cartItemsContainer.innerHTML = "";
+
+        if (!items || items.length === 0) {
+          cartItemsContainer.innerHTML = "<p>Giỏ hàng trống</p>";
+          updateTotals([]);
+          return;
+        }
+
+        items.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "cart-item";
+          itemElement.innerHTML = `
+                    <div class="item-image">
+                        <img src="${
+                          item.image || "images/3K IMG/placeholder.jpg"
+                        }" alt="${item.name}" class="product-image">
+                    </div>
+                    <div class="item-details">
+                        <h3>${item.name}</h3>
+                        <p class="price">${formatPrice(item.price)} VNĐ</p>
+                        <div class="quantity">
+                            <span>Số lượng: ${item.quantity}</span>
+                        </div>
+                        </div>
+                    `;
+          cartItemsContainer.appendChild(itemElement);
+        });
+
+        updateTotals(items);
+      }
+
+      function updateTotals(items) {
+        const subtotalElement = document.getElementById("subtotal");
+        const shippingElement = document.getElementById("shippingFee");
+        const totalElement = document.getElementById("totalAmount");
+
+        if (!items || items.length === 0) {
+          subtotalElement.textContent = "0 VNĐ";
+          shippingElement.textContent = "0 VNĐ";
+          totalElement.textContent = "0 VNĐ";
+          return;
+        }
+
+        const subtotal = items.reduce((sum, item) => {
+          const price = parseFloat(item.price) || 0;
+          const quantity = parseInt(item.quantity) || 0;
+          return sum + price * quantity;
+        }, 0);
+
+        const shipping = 30000; // Fixed shipping fee
+        const total = subtotal + shipping;
+
+        subtotalElement.textContent = formatPrice(subtotal) + " VNĐ";
+        shippingElement.textContent = formatPrice(shipping) + " VNĐ";
+        totalElement.textContent = formatPrice(total) + " VNĐ";
+      }
+
+      function formatPrice(price) {
+        return new Intl.NumberFormat("vi-VN").format(price);
+      }
+    </script>
+  </body>
+</html>

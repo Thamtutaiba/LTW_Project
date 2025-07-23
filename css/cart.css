@@ -1,0 +1,226 @@
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.cart-count:hover {
+    transform: scale(1.1);
+}
+
+.cart-items {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cart-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.cart-item-image:hover {
+    transform: scale(1.05);
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+}
+
+.cart-item-price {
+    color: #e44d26;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.quantity-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+}
+
+.quantity-input {
+    width: 60px;
+    text-align: center;
+    margin: 0 10px;
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.remove-item {
+    color: #dc3545;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+}
+
+.remove-item:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.cart-summary {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.cart-summary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.cart-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cart-empty i {
+    font-size: 64px;
+    color: #dee2e6;
+    margin-bottom: 25px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.cart-empty p {
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+
+.continue-shopping {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.continue-shopping:hover {
+    background: #0056b3;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#checkoutBtn {
+    padding: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#checkoutBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .cart-item-image {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 150px;
+        height: 150px;
+    }
+
+    .cart-item-quantity {
+        justify-content: center;
+        margin: 15px 0;
+    }
+
+    .cart-item-title {
+        font-size: 18px;
+    }
+
+    .cart-item-price {
+        font-size: 16px;
+    }
+}
+
+main.mt-5.pt-5 {
+    padding-top: 100px !important; /* Add padding to push content below fixed navbar */
+}

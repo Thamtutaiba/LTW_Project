@@ -1,0 +1,199 @@
+/* search.css - Định dạng cho tính năng tìm kiếm */
+
+/* Modal tìm kiếm */
+.search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1050;
+    overflow: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.search-modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.search-content {
+    position: relative;
+    background-color: #1a1a1a;
+    margin: 5% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+/* Header tìm kiếm */
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Form tìm kiếm */
+.search-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid #333;
+    border-radius: 4px 0 0 4px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #555;
+}
+
+#searchBtn {
+    background-color: #222;
+    border: 1px solid #222;
+    color: #fff;
+    padding: 0 20px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#searchBtn:hover {
+    background-color: #333;
+}
+
+/* Kết quả tìm kiếm */
+.search-results {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.searching-message, .no-results, .error-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+}
+
+.error-message {
+    color: #ff6b6b;
+}
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #222;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.product-link {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}
+
+.product-image {
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #111;
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-name {
+    font-size: 16px;
+    margin: 0 0 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-brand {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+/* Thanh cuộn tùy chỉnh */
+.search-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #111;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .results-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giỏ hàng - Music Lover</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <link rel="stylesheet" href="css/search.css" />
+    <link rel="icon" href="images/favicon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-black border-bot fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="images/3K%20IMG/shop.png" alt="Music Lover" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+        >
+          <span class="navbar-toggler-icon bg-white"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="Product.html">SẢN PHẨM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="news.html">TIN TỨC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">KHUYẾN MÃI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Contact.html">LIÊN HỆ</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <a href="#" class="nav-link text-white me-3" id="searchIcon">
+              <i class="fas fa-search"></i>
+            </a>
+            <div class="dropdown me-3">
+              <a
+                href="#"
+                class="nav-link text-white dropdown-toggle"
+                id="userIcon"
+                data-bs-toggle="dropdown"
+              >
+                <i class="fas fa-user"></i>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="userIcon"
+              >
+                <li>
+                  <a class="dropdown-item" href="login.html" id="loginLink"
+                    >Đăng nhập</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="signup.html" id="signupLink"
+                    >Đăng ký</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    id="logoutBtn"
+                    style="display: none"
+                    >Đăng xuất</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <a href="cart.html" class="nav-link text-white position-relative" id="cartIcon">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count" id="cartCount">0</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="mt-5 pt-5">
+      <div class="container">
+        <div class="row mb-4">
+          <div class="col">
+            <h1 class="display-5 fw-bold">Giỏ hàng của bạn</h1>
+            <p class="text-muted">Kiểm tra và điều chỉnh sản phẩm trong giỏ hàng của bạn</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Cart Items -->
+          <div class="col-lg-8">
+            <div class="cart-items" id="cartItems">
+              <!-- Cart items will be loaded here -->
+              <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="col-lg-4">
+            <div class="cart-summary sticky-top" style="top: 100px;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title mb-4">Tổng đơn hàng</h5>
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Tạm tính:</span>
+                    <span id="subtotal" class="fw-bold">0đ</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Phí vận chuyển:</span>
+                    <span id="shipping" class="fw-bold">0đ</span>
+                  </div>
+                  <hr />
+                  <div class="d-flex justify-content-between mb-4">
+                    <strong>Tổng cộng:</strong>
+                    <strong id="total" class="text-primary">0đ</strong>
+                  </div>
+                  <button class="btn btn-primary w-100" id="checkoutBtn">
+                    <i class="fas fa-lock me-2"></i>Tiến hành thanh toán
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/home-product-loader.js"></script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/carousel-control.js"></script>
+    <script src="js/product-links.js"></script>
+    <script src="js/product-details.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/search.js"></script>
+    <!-- Thêm script mới để tải sản phẩm -->
+    <script src="js/product-loader.js"></script>
+    <script src="js/cart.js"></script>
+  </body>
+</html>
